@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Churrasco Calculator</string>
+    <string name="adicionar_convidado">Adicionar convidado</string>
+    <string name="name">Name</string>
+    <string name="email">E-mail</string>
+    <string name="celular">Celular</string>
+    <string name="masculino">Masculino</string>
+    <string name="feminino">Feminino</string>
+    <string name="sexo">Sexo</string>
+    <string name="selecione_os_itens_para_levar">Selecione os itens para levar</string>
+    <string name="carne">Carne</string>
+    <string name="cerveja">Cerveja</string>
+    <string name="refrigerante">Refrigerante</string>
+    <string name="acompanhante">Acompanhante?</string>
+    <string name="salvar">Salvar</string>
+    <string name="limpar">Limpar</string>
+</resources>
