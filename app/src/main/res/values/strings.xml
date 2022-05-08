@@ -8,10 +8,15 @@
     <string name="feminino">Feminino</string>
     <string name="sexo">Sexo</string>
     <string name="selecione_os_itens_para_levar">Selecione os itens para levar</string>
-    <string name="carne">Carne</string>
+    <string name="boi">Boi</string>
+    <string name="porco">Porco</string>
+    <string name="frango">Frango</string>
     <string name="cerveja">Cerveja</string>
+    <string name="suco">Suco</string>
     <string name="refrigerante">Refrigerante</string>
     <string name="acompanhante">Acompanhante?</string>
     <string name="salvar">Salvar</string>
     <string name="limpar">Limpar</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
 </resources>

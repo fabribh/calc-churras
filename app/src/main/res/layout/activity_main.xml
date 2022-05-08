@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/app_name"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="1dp"
+    android:layout_height="match_parent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="@string/adicionar_convidado"
@@ -30,7 +27,8 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <EditText
             android:id="@+id/editTextNome"
@@ -38,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:autofillHints=""
@@ -52,63 +50,36 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <EditText
-            android:id="@+id/editTextEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:textColorHint="#757575"
-            app:layout_constraintEnd_toEndOf="@+id/editTextNome"
-            app:layout_constraintStart_toStartOf="@+id/editTextNome"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNome" />
-
-        <EditText
             android:id="@+id/editTextPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/celular"
             android:inputType="phone"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddress"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
+            app:layout_constraintEnd_toEndOf="@+id/editTextNome"
+            app:layout_constraintStart_toStartOf="@+id/editTextNome"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNome" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
+        <Spinner
+            android:id="@+id/spinnerItens"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dialog"
             app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
             app:layout_constraintStart_toStartOf="@+id/editTextPhone"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
-
-            <RadioButton
-                android:id="@+id/radioButtonFem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/feminino" />
-
-            <RadioButton
-                android:id="@+id/radioButtonMasc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/masculino" />
-        </RadioGroup>
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/sexo"
             app:layout_constraintStart_toStartOf="@+id/editTextPhone"
             app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
@@ -117,46 +88,121 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/selecione_os_itens_para_levar"
-            app:layout_constraintStart_toStartOf="@+id/checkBoxAcompanhante"
-            app:layout_constraintTop_toBottomOf="@+id/checkBoxAcompanhante" />
-
-        <CheckBox
-            android:id="@+id/checkBoxAcompanhante"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/acompanhante"
-            app:layout_constraintStart_toStartOf="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-        <Spinner
-            android:id="@+id/spinnerItens"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/checkBoxSuco"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/radioGroup"
-            app:layout_constraintStart_toStartOf="@+id/radioGroup"
+            android:layout_marginTop="16dp"
+            android:text="@string/suco"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <Button
-            android:id="@+id/buttonSalva"
+        <CheckBox
+            android:id="@+id/checkBoxCerveja"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/salvar"
-            app:layout_constraintStart_toStartOf="@+id/spinnerItens"
-            app:layout_constraintTop_toBottomOf="parent" />
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/cerveja"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxSuco"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <CheckBox
+            android:id="@+id/checkBoxRefri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/refrigerante"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxCerveja"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <CheckBox
+            android:id="@+id/checkBoxFrango"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/frango"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxSuco"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxSuco" />
+
+        <CheckBox
+            android:id="@+id/checkBoxPorco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/porco"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxFrango"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxCerveja" />
+
+        <CheckBox
+            android:id="@+id/checkBoxBoi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/boi"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxPorco"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxRefri" />
 
         <Button
-            android:id="@+id/buttonLimpar"
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/limpar"
             app:layout_constraintEnd_toEndOf="@+id/spinnerItens"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxPorco" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/salvar"
+            app:layout_constraintStart_toStartOf="@+id/spinnerItens"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxFrango" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/spinnerItens"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sim" />
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nao" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/acompanhante"
+            app:layout_constraintStart_toStartOf="@+id/spinnerItens"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerItens" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
