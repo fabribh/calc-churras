@@ -160,6 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:onClick="limparCampos"
             android:text="@string/limpar"
             app:layout_constraintEnd_toEndOf="@+id/spinnerItens"
             app:layout_constraintTop_toBottomOf="@+id/checkBoxPorco" />
@@ -169,6 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:onClick="salvar"
             android:text="@string/salvar"
             app:layout_constraintStart_toStartOf="@+id/spinnerItens"
             app:layout_constraintTop_toBottomOf="@+id/checkBoxFrango" />
@@ -183,13 +185,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/radioButtonSim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sim" />
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/radioButtonNao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nao" />

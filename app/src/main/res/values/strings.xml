@@ -19,4 +19,22 @@
     <string name="limpar">Limpar</string>
     <string name="sim">Sim</string>
     <string name="nao">Não</string>
+    <string name="campos_limpos_com_sucesso">" Campos limpos com sucesso"</string>
+    <string name="nenhuma_opcao_selecionada">Nenhuma opção foi selecionada.</string>
+    <string name="foram_selecionados">Foram selecionados</string>
+    <string name="erro_phone">Phone deve ser preenchido</string>
+    <string name="erro_nome">Nome deve ser preenchido</string>
+    <string name="erro_sexo">Selecione o sexo</string>
+    <string name="erro_acompanhante">Selecione a opção acompanhante</string>
+    <string name="pedro">Pedro</string>
+    <string name="maria">Maria</string>
+    <string name="joao">João</string>
+    <string name="lucia">Lúcia</string>
+    <string name="marcia">Márcia</string>
+    <string name="marcos">Marcos</string>
+    <string name="alice">Alice</string>
+    <string name="fernanda">Fernanda</string>
+    <string name="guilherme">Guilherme</string>
+    <string name="gabriel">Gabriel</string>
+    <string name="foi_clicado">" Foi clicado"</string>
 </resources>
