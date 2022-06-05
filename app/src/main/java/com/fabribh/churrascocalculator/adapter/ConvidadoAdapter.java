@@ -1,54 +1,68 @@
 package com.fabribh.churrascocalculator.adapter;
 
-import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fabribh.churrascocalculator.R;
 import com.fabribh.churrascocalculator.entities.Convidado;
 
 import java.util.List;
+import java.util.Objects;
 
 
-public class ConvidadoAdapter<T> extends BaseAdapter {
+public class ConvidadoAdapter extends RecyclerView.Adapter<ConvidadoAdapter.ConvidadoViewHolder> {
 
     private final List<Convidado> convidados;
-    private final Activity activity;
+    private final Context context;
 
-    public ConvidadoAdapter(List<Convidado> convidados, Activity activity) {
+    public ConvidadoAdapter(List<Convidado> convidados, Context context) {
         this.convidados = convidados;
-        this.activity = activity;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ConvidadoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View itemListaConvidados = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.activity_lista_de_convidados,
+                        viewGroup, false);
+        return new ConvidadoViewHolder(itemListaConvidados);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull ConvidadoViewHolder holder, int position) {
+        Convidado convidado = convidados.get(position);
+
+        holder.nome.setText(convidado.getNome());
+        holder.phone.setText(convidado.getPhone());
+        holder.itens.setText(convidado.getItem().toString());
+        String sexo = "Sexo: ".concat(Objects.isNull(convidado.getSexo()) ? "Feminino" : convidado.getSexo());
+        holder.sexo.setText(sexo);
+        String acompanhante = "Acompanhante: ".concat(Objects.isNull(convidado.getAcompanhante()) ? "Não" : convidado.getAcompanhante());
+        holder.acompanhante.setText(acompanhante);
+    }
+
+    @Override
+    public int getItemCount() {
         return convidados.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return convidados.get(i);
-    }
+    class ConvidadoViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+        public ConvidadoViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = activity.getLayoutInflater()
-                .inflate(R.layout.activity_lista_de_convidados, parent, false);
-        Convidado convidado = convidados.get(position);
-
-        TextView nome = (TextView) view.findViewById(R.id.editTextNome);
-        TextView phone = (TextView) view.findViewById(R.id.editTextPhone);
-
-        nome.setText(convidado.getNome());
-        phone.setText(convidado.getPhone());
-
-        return view;
+        TextView nome = itemView.findViewById(R.id.nomeConvidado);
+        TextView phone = itemView.findViewById(R.id.celConvidado);
+        TextView itens = itemView.findViewById(R.id.itensSelecionados);
+        TextView sexo = itemView.findViewById(R.id.sexoConvidado);
+        TextView acompanhante = itemView.findViewById(R.id.acompanhanteConvidado);
     }
 }

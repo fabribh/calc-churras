@@ -1,14 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ListaDeConvidadosActivity">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:layout_margin="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListView
-        android:id="@+id/listaDeConvidados"
+    <ImageView
+        android:id="@+id/convidado"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/convidado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
+        android:contentDescription="TODO" />
+
+    <TextView
+        android:id="@+id/nomeConvidado"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:text="Nome do Convidado"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toEndOf="@id/convidado"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</android.widget.LinearLayout>
+    <TextView
+        android:id="@+id/celConvidado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="email@email.com.br"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/nomeConvidado"
+        app:layout_constraintStart_toEndOf="@id/convidado"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/itensSelecionados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:maxLines="2"
+        android:text="Texto para colocar as inf sobre o que o convidado irá levar ex: Cerveja, Refrigerante."
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/celConvidado"
+        app:layout_constraintStart_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/sexoConvidado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="200dp"
+        android:text="Masculino"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/itensSelecionados"
+        app:layout_constraintStart_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/acompanhanteConvidado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="200dp"
+        android:text="Acompanhante"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/itensSelecionados"
+        app:layout_constraintStart_toEndOf="@id/sexoConvidado"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

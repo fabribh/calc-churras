@@ -37,4 +37,7 @@
     <string name="guilherme">Guilherme</string>
     <string name="gabriel">Gabriel</string>
     <string name="foi_clicado">" Foi clicado"</string>
+    <string name="convidado">Convidado</string>
+    <string name="novo">Novo</string>
+    <string name="sobre">Sobre</string>
 </resources>

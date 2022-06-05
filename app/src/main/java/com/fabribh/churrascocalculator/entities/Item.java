@@ -1,5 +1,7 @@
 package com.fabribh.churrascocalculator.entities;
 
+import java.util.Objects;
+
 public class Item {
 
     private String nome;
@@ -29,6 +31,6 @@ public class Item {
     public String toString() {
         return nome
                 + " - " +
-                quantidade;
+                (Objects.isNull(quantidade) ? "0" : quantidade);
     }
 }
