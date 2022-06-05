@@ -1,5 +1,11 @@
 package com.fabribh.churrascocalculator;
 
+import static com.fabribh.churrascocalculator.MainActivity.NOVO;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,14 +26,24 @@ import com.fabribh.churrascocalculator.entities.Item;
 import com.fabribh.churrascocalculator.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 public class ListaDeConvidadosActivity extends AppCompatActivity {
 
-    private RecyclerView                recyclerViewConvidados;
-    private RecyclerView.LayoutManager  layoutManager;
-    private ConvidadoAdapter            convidadoAdapter;
+    public static final String MODO = "MODO";
+
+    private RecyclerView recyclerViewConvidados;
+    private RecyclerView.LayoutManager layoutManager;
+    private ConvidadoAdapter convidadoAdapter;
 
     private ArrayList<Convidado> convidados;
+
+    private int modo;
+
+    public void adicionarConvidado(View view) {
+        MainActivity.novoConvidado(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +60,18 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
         recyclerViewConvidados.setHasFixedSize(true);
         recyclerViewConvidados.addItemDecoration(new DividerItemDecoration(this,
                 LinearLayout.VERTICAL));
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+
+            modo = bundle.getInt(MODO, NOVO);
+
+            if (modo == NOVO) {
+                setTitle("Novo Convidado");
+            }
+        }
 
         popularLista();
 
@@ -72,24 +102,46 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
     }
 
     private void popularLista() {
-        String[] nomes = getResources().getStringArray(R.array.nomes);
-        String[] phones = getResources().getStringArray(R.array.phones);
-        String[] itensChurrasco = getResources().getStringArray(R.array.itens);
 
         convidados = new ArrayList<>();
-        ArrayList<Item> items = new ArrayList<>();
-
-        for (int i = 0; i < itensChurrasco.length; i++) {
-            items.add(new Item(itensChurrasco[i]));
-        }
-
-        for (int cont = 0; cont < nomes.length; cont++) {
-
-            convidados.add(new Convidado(nomes[cont], phones[cont], items));
-        }
 
         convidadoAdapter = new ConvidadoAdapter(convidados, this);
 
         recyclerViewConvidados.setAdapter(convidadoAdapter);
+    }
+
+    public void abrirSobre(View view) {
+        SobreActivity.sobre(this);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            Bundle bundle = data.getExtras();
+
+            ArrayList<Item> items = new ArrayList<>();
+
+            String nome = bundle.getString(MainActivity.NOME);
+            String phone = bundle.getString(MainActivity.PHONE);
+            String sexo = bundle.getString(MainActivity.SEXO);
+            String acompanhante = bundle.getString(MainActivity.ACOMPANHANTE);
+            ArrayList<String> itensSelecionados = bundle.getStringArrayList(MainActivity.ITENS);
+
+            itensSelecionados.stream()
+                    .forEach(i -> items.add(new Item(i)));
+
+            Convidado convidado = new Convidado(nome, phone, items);
+
+            convidado.setSexo(sexo);
+            convidado.setAcompanhante(acompanhante);
+
+            convidados.add(convidado);
+
+            convidadoAdapter.notifyDataSetChanged();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

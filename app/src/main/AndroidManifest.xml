@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChurrascoCalculator">
         <activity
+            android:name=".SobreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ListaDeConvidadosActivity"
             android:exported="true">
             <intent-filter>
@@ -20,7 +23,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

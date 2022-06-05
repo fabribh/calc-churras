@@ -2,8 +2,12 @@ package com.fabribh.churrascocalculator;
 
 import static android.widget.Toast.makeText;
 
+import static com.fabribh.churrascocalculator.ListaDeConvidadosActivity.MODO;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,11 +21,25 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int NOVO    = 1;
+    public static final String NOME = "NOME";
+    public static final String PHONE = "PHONE";
+    public static final String SEXO = "SEXO";
+    public static final String ACOMPANHANTE = "ACOMPANHANTE";
+    public static final String ITENS = "ITENS";
+
     private Spinner spinnerItens;
     private EditText editTextNome, editTextPhone;
     private RadioGroup radioGroup;
     private CheckBox checkBoxSuco, checkBoxRefri, checkBoxCerveja,
             checkBoxBoi, checkBoxFrango, checkBoxPorco;
+
+    public static void novoConvidado(AppCompatActivity activity) {
+
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.putExtra(MODO, NOVO);
+        activity.startActivityForResult(intent, NOVO);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +94,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void salvar(View view) {
-        String mensagem = "";
         String nome = editTextNome.getText().toString();
         String phone = editTextPhone.getText().toString();
+        String acompanhante;
+        ArrayList<String> itens = new ArrayList<>();
 
         if (nome == null || nome.trim().isEmpty()) {
             makeText(this, getString(R.string.erro_nome), Toast.LENGTH_SHORT)
@@ -90,38 +109,38 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             editTextPhone.requestFocus();
         }
-        mensagem = nome + "\n" + phone + "\n";
 
         if (checkBoxBoi.isChecked()) {
-            mensagem += getString(R.string.boi) + "\n";
+            itens.add(getString(R.string.boi));
         }
         if (checkBoxFrango.isChecked()) {
-            mensagem += getString(R.string.frango) + "\n";
+            itens.add(getString(R.string.frango));
         }
         if (checkBoxPorco.isChecked()) {
-            mensagem += getString(R.string.porco) + "\n";
+            itens.add(getString(R.string.porco));
         }
         if (checkBoxCerveja.isChecked()) {
-            mensagem += getString(R.string.cerveja) + "\n";
+            itens.add(getString(R.string.cerveja));
         }
         if (checkBoxSuco.isChecked()) {
-            mensagem += getString(R.string.suco) + "\n";
+            itens.add(getString(R.string.suco));
         }
         if (checkBoxRefri.isChecked()) {
-            mensagem += getString(R.string.refrigerante) + "\n";
+            itens.add(getString(R.string.refrigerante));
         }
 
         String sexo = (String) spinnerItens.getSelectedItem();
-        if (sexo != null) {
-            mensagem += sexo + "\n";
+        if (sexo == null) {
+            makeText(this, getString(R.string.erro_sexo), Toast.LENGTH_SHORT)
+                    .show();
         }
 
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radioButtonSim:
-                mensagem += "Acompanhante: " + getString(R.string.sim) + "\n";
+                acompanhante = getString(R.string.sim);
                 break;
             case R.id.radioButtonNao:
-                mensagem += "Acompanhante: " + getString(R.string.nao) + "\n";
+                acompanhante = getString(R.string.nao);
                 break;
             default:
                 makeText(this, getString(R.string.erro_acompanhante), Toast.LENGTH_SHORT)
@@ -130,15 +149,20 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
 
-        if (mensagem.isEmpty()) {
-            mensagem = getString(R.string.nenhuma_opcao_selecionada);
-        } else {
-            mensagem = getString(R.string.foram_selecionados) + "\n" + mensagem;
-        }
+        Intent intent = new Intent();
+        intent.putExtra(NOME, nome);
+        intent.putExtra(PHONE, phone);
+        intent.putExtra(SEXO, sexo);
+        intent.putExtra(ACOMPANHANTE, acompanhante);
+        intent.putExtra(ITENS, itens);
 
-        makeText(this,
-                mensagem,
-                Toast.LENGTH_SHORT
-        ).show();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }
