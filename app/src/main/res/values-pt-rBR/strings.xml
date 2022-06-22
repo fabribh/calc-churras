@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="adicionar_convidado">Adicionar convidado</string>
+    <string name="name">Name</string>
+    <string name="email">E-mail</string>
+    <string name="celular">Celular</string>
+    <string name="masculino">Masculino</string>
+    <string name="feminino">Feminino</string>
+    <string name="sexo">Sexo</string>
+    <string name="selecione_os_itens_para_levar">Selecione os itens para levar</string>
+    <string name="boi">Boi</string>
+    <string name="porco">Porco</string>
+    <string name="frango">Frango</string>
+    <string name="cerveja">Cerveja</string>
+    <string name="suco">Suco</string>
+    <string name="refrigerante">Refrigerante</string>
+    <string name="acompanhante">Acompanhante?</string>
+    <string name="salvar">Salvar</string>
+    <string name="limpar">Limpar</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="campos_limpos_com_sucesso">Campos limpos com sucesso</string>
+    <string name="nenhuma_opcao_selecionada">Nenhuma opção foi selecionada</string>
+    <string name="foram_selecionados">Foram selecionados</string>
+    <string name="erro_phone">Phone deve ser preenchido</string>
+    <string name="erro_nome">Nome deve ser preenchido</string>
+    <string name="erro_sexo">Selecione o sexo</string>
+    <string name="foi_clicado">" Foi clicado"</string>
+    <string name="convidado">Convidado</string>
+    <string name="novo">Novo</string>
+    <string name="sobre">Sobre</string>
+    <string name="sobre_objetivo">App para calculo de itens para realizacão de churrasco</string>
+    <string name="autor">Autor: Fabio Pedro Ribeiro</string>
+    <string name="curso">Curso: XXII Curso de Especialização em Tecnologia Java</string>
+    <string name="emailAutor">Email: si.fabioribeiro@gmail.com</string>
+    <string name="erro_acompanhante">Informe se vai levar acompanhante</string>
+    <string name="alterar">Alterar</string>
+    <string name="excluir">Excluir</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="alterar_convidado">Alterar Convidado</string>
+    <string name="novo_convidado">Novo Convidado</string>
+    <string name="sexoExibicao">"Sexo: "</string>
+    <string name="acompanhanteExibir">"Acompanhante: "</string>
+</resources>

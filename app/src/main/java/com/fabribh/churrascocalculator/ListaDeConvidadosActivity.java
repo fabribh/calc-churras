@@ -110,7 +110,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
             modo = bundle.getInt(MODO, NOVO);
 
             if (modo == NOVO) {
-                setTitle("Novo Convidado");
+                setTitle(getString(R.string.novo_convidado));
             }
         }
 

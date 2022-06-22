@@ -42,9 +42,11 @@ public class ConvidadoAdapter extends RecyclerView.Adapter<ConvidadoAdapter.Conv
         holder.nome.setText(convidado.getNome());
         holder.phone.setText(convidado.getPhone());
         holder.itens.setText(convidado.getItem().toString());
-        String sexo = "Sexo: ".concat(Objects.isNull(convidado.getSexo()) ? "Feminino" : convidado.getSexo());
+        String sexo;
+        sexo = context.getString(R.string.sexoExibicao).concat(Objects.isNull(convidado.getSexo()) ? "Feminino" : convidado.getSexo());
         holder.sexo.setText(sexo);
-        String acompanhante = "Acompanhante: ".concat(Objects.isNull(convidado.getAcompanhante()) ? "Não" : convidado.getAcompanhante());
+        String acompanhante;
+        acompanhante = context.getString(R.string.acompanhanteExibir).concat(Objects.isNull(convidado.getAcompanhante()) ? "Não" : convidado.getAcompanhante());
         holder.acompanhante.setText(acompanhante);
     }
 

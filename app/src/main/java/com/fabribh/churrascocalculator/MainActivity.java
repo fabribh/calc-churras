@@ -5,8 +5,13 @@ import static com.fabribh.churrascocalculator.ListaDeConvidadosActivity.MODO;
 import static com.fabribh.churrascocalculator.R.string.boi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.ArraySet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,13 +23,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fabribh.churrascocalculator.entities.Convidado;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class MainActivity extends AppCompatActivity {
 
     public static final int NOVO    = 1;
@@ -34,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String SEXO = "SEXO";
     public static final String ACOMPANHANTE = "ACOMPANHANTE";
     public static final String ITENS = "ITENS";
-    public static final String SUCO = "Suco";
-    public static final String REFRI = "Refrigerante";
-    public static final String CERVEJA = "Cerveja";
-    public static final String FRANGO = "Frango";
-    public static final String PORCO = "Porco";
-    public static final String BOI = "Boi";
+    public static final String ULTIMOS_ITENS = "ULTIMOS_ITENS";
 
     private Spinner spinnerItens;
     private EditText editTextNome, editTextPhone;
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int modo;
     public static int posicaoNaLista = -1;
+
+    private Set<String> ultimosItensSelecionados = new ArraySet<>();
+    public static final String ARQUIVO = "com.fabribh.churrascocalculator.ULTIMOS_ITENS_SELECIONADO";
 
     public static void novoConvidado(ListaDeConvidadosActivity activity) {
 
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         activity.startActivityForResult(intent, ALTERAR);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         if (bundle != null) {
             modo = bundle.getInt(MODO, NOVO);
             if (modo == NOVO) {
-                setTitle("Novo Convidado");
+                setTitle(getString(R.string.novo_convidado));
             } else {
                 editTextNome.setText(bundle.getString(NOME));
                 editTextPhone.setText(bundle.getString(PHONE));
@@ -111,34 +120,76 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] itensSelecionados = bundle.getString(ITENS).split("[^a-zA-Z\\t\\s]");
                 for (int i = 0; i < itensSelecionados.length; i++){
-                    switch (itensSelecionados[i].trim()){
-                        case SUCO:
-                            checkBoxSuco.setChecked(true);
-                            break;
-
-                        case REFRI:
-                            checkBoxRefri.setChecked(true);
-                            break;
-
-                        case CERVEJA:
-                            checkBoxCerveja.setChecked(true);
-                            break;
-
-                        case PORCO:
-                            checkBoxPorco.setChecked(true);
-                            break;
-
-                        case FRANGO:
-                            checkBoxFrango.setChecked(true);
-                            break;
-
-                        case BOI:
-                            checkBoxBoi.setChecked(true);
-                            break;
+                    if (itensSelecionados[i].trim().equals(getString(R.string.suco).trim())) {
+                        checkBoxSuco.setChecked(true);
+                    }
+                    if (itensSelecionados[i].trim().equals(getString(R.string.refrigerante).trim())) {
+                        checkBoxRefri.setChecked(true);
+                    }
+                    if (itensSelecionados[i].trim().equals(getString(R.string.cerveja).trim())) {
+                        checkBoxCerveja.setChecked(true);
+                    }
+                    if (itensSelecionados[i].trim().equals(getString(R.string.porco).trim())) {
+                        checkBoxPorco.setChecked(true);
+                    }
+                    if (itensSelecionados[i].trim().equals(getString(R.string.frango).trim())) {
+                        checkBoxFrango.setChecked(true);
+                    }
+                    if (itensSelecionados[i].trim().equals(getString(R.string.boi).trim())) {
+                        checkBoxBoi.setChecked(true);
                     }
                 }
-                setTitle("Alterar Convidado");
+                setTitle(getString(R.string.alterar_convidado));
             }
+        }
+        getPreferencia();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void getPreferencia(){
+        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO, Context.MODE_PRIVATE);
+
+        ultimosItensSelecionados = sharedPreferences.getStringSet(ULTIMOS_ITENS, ultimosItensSelecionados);
+
+        populaCheckBoxItensSharedPreferences();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setPreferencia(List<String> itensSelecionados){
+        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putStringSet(ULTIMOS_ITENS, itensSelecionados
+                .stream()
+                .collect(Collectors.toSet()));
+
+        editor.commit();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void populaCheckBoxItensSharedPreferences(){
+        if(!ultimosItensSelecionados.isEmpty()){
+            ultimosItensSelecionados
+                    .forEach(i -> {
+                        if (i.equals(getString(R.string.suco))){
+                          checkBoxSuco.setChecked(true);
+                        }
+                        if (i.equals(getString(R.string.refrigerante))){
+                            checkBoxRefri.setChecked(true);
+                        }
+                        if (i.equals(getString(R.string.cerveja))){
+                            checkBoxCerveja.setChecked(true);
+                        }
+                        if (i.equals(getString(R.string.frango))){
+                            checkBoxFrango.setChecked(true);
+                        }
+                        if (i.equals(getString(R.string.porco))){
+                            checkBoxPorco.setChecked(true);
+                        }
+                        if (i.equals(getString(boi))){
+                            checkBoxBoi.setChecked(true);
+                        }
+                    });
         }
     }
 
@@ -154,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
         spinnerItens.setAdapter(arrayAdapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void salvar() {
         String nome = editTextNome.getText().toString();
         String phone = editTextPhone.getText().toString();
@@ -217,6 +269,8 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ACOMPANHANTE, acompanhante);
         intent.putExtra(ITENS, itens);
 
+        setPreferencia(itens);
+
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
@@ -233,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
