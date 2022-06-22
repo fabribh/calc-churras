@@ -20,7 +20,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@string/adicionar_convidado"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -154,26 +153,6 @@
             android:text="@string/boi"
             app:layout_constraintStart_toEndOf="@+id/checkBoxPorco"
             app:layout_constraintTop_toBottomOf="@+id/checkBoxRefri" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:onClick="limparCampos"
-            android:text="@string/limpar"
-            app:layout_constraintEnd_toEndOf="@+id/spinnerItens"
-            app:layout_constraintTop_toBottomOf="@+id/checkBoxPorco" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:onClick="salvar"
-            android:text="@string/salvar"
-            app:layout_constraintStart_toStartOf="@+id/spinnerItens"
-            app:layout_constraintTop_toBottomOf="@+id/checkBoxFrango" />
 
         <RadioGroup
             android:id="@+id/radioGroup"

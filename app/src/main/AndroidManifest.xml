@@ -11,7 +11,13 @@
         android:theme="@style/Theme.ChurrascoCalculator">
         <activity
             android:name=".SobreActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ListaDeConvidadosActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ListaDeConvidadosActivity" />
+        </activity>
         <activity
             android:name=".ListaDeConvidadosActivity"
             android:exported="true">

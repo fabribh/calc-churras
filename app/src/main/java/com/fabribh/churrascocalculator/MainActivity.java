@@ -1,14 +1,14 @@
 package com.fabribh.churrascocalculator;
 
 import static android.widget.Toast.makeText;
-
 import static com.fabribh.churrascocalculator.ListaDeConvidadosActivity.MODO;
-
-import androidx.appcompat.app.AppCompatActivity;
+import static com.fabribh.churrascocalculator.R.string.boi;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -17,16 +17,29 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.fabribh.churrascocalculator.entities.Convidado;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int NOVO    = 1;
+    public static final int ALTERAR = 2;
     public static final String NOME = "NOME";
     public static final String PHONE = "PHONE";
     public static final String SEXO = "SEXO";
     public static final String ACOMPANHANTE = "ACOMPANHANTE";
     public static final String ITENS = "ITENS";
+    public static final String SUCO = "Suco";
+    public static final String REFRI = "Refrigerante";
+    public static final String CERVEJA = "Cerveja";
+    public static final String FRANGO = "Frango";
+    public static final String PORCO = "Porco";
+    public static final String BOI = "Boi";
 
     private Spinner spinnerItens;
     private EditText editTextNome, editTextPhone;
@@ -34,17 +47,41 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBoxSuco, checkBoxRefri, checkBoxCerveja,
             checkBoxBoi, checkBoxFrango, checkBoxPorco;
 
-    public static void novoConvidado(AppCompatActivity activity) {
+    private int modo;
+    public static int posicaoNaLista = -1;
 
+    public static void novoConvidado(ListaDeConvidadosActivity activity) {
+
+        posicaoNaLista = -1;
         Intent intent = new Intent(activity, MainActivity.class);
         intent.putExtra(MODO, NOVO);
         activity.startActivityForResult(intent, NOVO);
+    }
+
+    public static void alterarConvidado(ListaDeConvidadosActivity activity,
+                                        Convidado convidado,
+                                        int posicao) {
+        posicaoNaLista = posicao;
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(NOME, convidado.getNome());
+        intent.putExtra(PHONE, convidado.getPhone());
+        intent.putExtra(SEXO, convidado.getSexo());
+        intent.putExtra(ACOMPANHANTE, convidado.getAcompanhante());
+        intent.putExtra(ITENS, convidado.getItem().toString());
+
+        activity.startActivityForResult(intent, ALTERAR);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         spinnerItens = findViewById(R.id.spinnerItens);
         editTextNome = findViewById(R.id.editTextNome);
@@ -58,7 +95,51 @@ public class MainActivity extends AppCompatActivity {
         checkBoxFrango = findViewById(R.id.checkBoxFrango);
         checkBoxPorco = findViewById(R.id.checkBoxPorco);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
         populateSpinner();
+
+        if (bundle != null) {
+            modo = bundle.getInt(MODO, NOVO);
+            if (modo == NOVO) {
+                setTitle("Novo Convidado");
+            } else {
+                editTextNome.setText(bundle.getString(NOME));
+                editTextPhone.setText(bundle.getString(PHONE));
+                spinnerItens.setSelection(bundle.getString(SEXO) == getString(R.string.masculino) ? 0 : 1);
+                radioGroup.check(bundle.getString(ACOMPANHANTE).equals("Sim") ? R.id.radioButtonSim : R.id.radioButtonNao);
+
+                String[] itensSelecionados = bundle.getString(ITENS).split("[^a-zA-Z\\t\\s]");
+                for (int i = 0; i < itensSelecionados.length; i++){
+                    switch (itensSelecionados[i].trim()){
+                        case SUCO:
+                            checkBoxSuco.setChecked(true);
+                            break;
+
+                        case REFRI:
+                            checkBoxRefri.setChecked(true);
+                            break;
+
+                        case CERVEJA:
+                            checkBoxCerveja.setChecked(true);
+                            break;
+
+                        case PORCO:
+                            checkBoxPorco.setChecked(true);
+                            break;
+
+                        case FRANGO:
+                            checkBoxFrango.setChecked(true);
+                            break;
+
+                        case BOI:
+                            checkBoxBoi.setChecked(true);
+                            break;
+                    }
+                }
+                setTitle("Alterar Convidado");
+            }
+        }
     }
 
     private void populateSpinner() {
@@ -73,27 +154,7 @@ public class MainActivity extends AppCompatActivity {
         spinnerItens.setAdapter(arrayAdapter);
     }
 
-    public void limparCampos(View view) {
-        String mensagemLimpar = getString(R.string.campos_limpos_com_sucesso);
-        editTextPhone.setText(null);
-        editTextNome.setText(null);
-
-        radioGroup.clearCheck();
-
-        checkBoxPorco.setChecked(false);
-        checkBoxBoi.setChecked(false);
-        checkBoxFrango.setChecked(false);
-        checkBoxSuco.setChecked(false);
-        checkBoxCerveja.setChecked(false);
-        checkBoxRefri.setChecked(false);
-
-        spinnerItens.setSelected(false);
-
-        makeText(this, mensagemLimpar, Toast.LENGTH_SHORT)
-                .show();
-    }
-
-    public void salvar(View view) {
+    public void salvar() {
         String nome = editTextNome.getText().toString();
         String phone = editTextPhone.getText().toString();
         String acompanhante;
@@ -111,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (checkBoxBoi.isChecked()) {
-            itens.add(getString(R.string.boi));
+            itens.add(getString(boi));
         }
         if (checkBoxFrango.isChecked()) {
             itens.add(getString(R.string.frango));
@@ -162,6 +223,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_opcoes, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuItemSalvar:
+                salvar();
+                return true;
+
+            case android.R.id.home:
+            case R.id.menuItemCancelar:
+                cancelar();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void cancelar() {
         setResult(Activity.RESULT_CANCELED);
         finish();
     }

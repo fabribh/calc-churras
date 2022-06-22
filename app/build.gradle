@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 28
 
     defaultConfig {
         applicationId "com.fabribh.churrascocalculator"
-        minSdk 16
-        targetSdk 30
+        minSdk 15
+        targetSdk 28
         versionCode 1
         versionName "1.0"
 

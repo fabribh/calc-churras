@@ -44,4 +44,7 @@
     <string name="curso">Curso: XXII Curso de Especialização em Tecnologia Java</string>
     <string name="emailAutor">Email: si.fabioribeiro@gmail.com</string>
     <string name="erro_acompanhante">Informe se vai levar acompanhante</string>
+    <string name="alterar">Alterar</string>
+    <string name="excluir">Excluir</string>
+    <string name="cancelar">Cancelar</string>
 </resources>
