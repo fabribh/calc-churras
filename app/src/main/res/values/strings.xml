@@ -8,12 +8,12 @@
     <string name="feminino">Faminine</string>
     <string name="sexo">Gender</string>
     <string name="selecione_os_itens_para_levar">Select items to take</string>
-    <string name="boi">Beef</string>
-    <string name="porco">Pork</string>
-    <string name="frango">Chicken</string>
-    <string name="cerveja">Beer</string>
-    <string name="suco">Juice</string>
-    <string name="refrigerante">Soda</string>
+    <string name="boi">Boi</string>
+    <string name="porco">Porco</string>
+    <string name="frango">Frango</string>
+    <string name="cerveja">Cerveja</string>
+    <string name="suco">Suco</string>
+    <string name="refrigerante">Refrigerante</string>
     <string name="acompanhante">Partners?</string>
     <string name="salvar">Save</string>
     <string name="limpar">Clear</string>
@@ -41,4 +41,14 @@
     <string name="novo_convidado">New Guess</string>
     <string name="sexoExibicao">"Gender: "</string>
     <string name="acompanhanteExibir">"Partner: "</string>
+    <string name="deseja_realmente_apagar">Deseja realmente apagar?</string>
+    <string name="aviso">Aviso</string>
+    <string name="ok">OK</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="kg_08">0,8 KG</string>
+    <string name="kg_04">0,4 KG</string>
+    <string name="l_2">2 L</string>
+    <string name="l_1">1 L</string>
+    <string name="lt_12">12 LT</string>
+    <string name="lt_6">6 LT</string>
 </resources>

@@ -3,6 +3,7 @@ package com.fabribh.churrascocalculator;
 import static com.fabribh.churrascocalculator.MainActivity.NOVO;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -25,9 +26,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fabribh.churrascocalculator.adapter.ConvidadoAdapter;
 import com.fabribh.churrascocalculator.entities.Convidado;
 import com.fabribh.churrascocalculator.entities.Item;
+import com.fabribh.churrascocalculator.persistencia.ConvidadoDatabase;
 import com.fabribh.churrascocalculator.utils.RecyclerItemClickListener;
+import com.fabribh.churrascocalculator.utils.UtilsGUI;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ListaDeConvidadosActivity extends AppCompatActivity {
 
@@ -37,7 +43,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ConvidadoAdapter convidadoAdapter;
 
-    private ArrayList<Convidado> convidados;
+    private List<Convidado> convidados;
     private int posicaoSelecionada = -1;
     private View viewSelecionada;
     private ActionMode actionMode;
@@ -57,6 +63,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
             return false;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
@@ -79,7 +86,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
         public void onDestroyActionMode(ActionMode actionMode) {
 
             if (viewSelecionada != null){
-                viewSelecionada.setBackgroundColor(Color.TRANSPARENT);
+                viewSelecionada.setBackgroundColor(Color.WHITE);
             }
 
             actionMode      = null;
@@ -121,6 +128,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
                         recyclerViewConvidados,
                         new RecyclerItemClickListener.OnItemClickListener() {
 
+                            @RequiresApi(api = Build.VERSION_CODES.M)
                             @Override
                             public void onItemClick(View view, int position) {
                                 posicaoSelecionada = position;
@@ -141,7 +149,9 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
 
     private void popularLista() {
 
-        convidados = new ArrayList<>();
+        ConvidadoDatabase database = ConvidadoDatabase.getDatabase(this);
+
+        convidados = database.convidadoDao().queryAll();
 
         convidadoAdapter = new ConvidadoAdapter(convidados, this);
 
@@ -149,10 +159,35 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
     }
 
     private void excluirConvidado(){
-        convidados.remove(posicaoSelecionada);
-        convidadoAdapter.notifyDataSetChanged();
+        String mensagem = getString(R.string.deseja_realmente_apagar) + "\n" +
+                convidados.get(posicaoSelecionada).getNome();
+
+        DialogInterface.OnClickListener listener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        switch (i) {
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                ConvidadoDatabase database =
+                                        ConvidadoDatabase.getDatabase(ListaDeConvidadosActivity.this);
+                                database.convidadoDao().delete(convidados.get(posicaoSelecionada));
+
+                                convidados.remove(posicaoSelecionada);
+                                convidadoAdapter.notifyDataSetChanged();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+
+                                break;
+                        }
+                    }
+                };
+        UtilsGUI.confirmacao(this, mensagem, listener);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void alterarConvidado() {
         Convidado convidado = convidados.get(posicaoSelecionada);
         MainActivity.alterarConvidado(this, convidado, posicaoSelecionada);
@@ -166,21 +201,13 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
 
             Bundle bundle = data.getExtras();
 
-            ArrayList<Item> items = new ArrayList<>();
-
             String nome = bundle.getString(MainActivity.NOME);
             String phone = bundle.getString(MainActivity.PHONE);
             String sexo = bundle.getString(MainActivity.SEXO);
             String acompanhante = bundle.getString(MainActivity.ACOMPANHANTE);
-            ArrayList<String> itensSelecionados = bundle.getStringArrayList(MainActivity.ITENS);
+            String itensSelecionados = bundle.getString(MainActivity.ITENS);
 
-            itensSelecionados.stream()
-                    .forEach(i -> items.add(new Item(i)));
-
-            Convidado convidado = new Convidado(nome, phone, items);
-
-            convidado.setSexo(sexo);
-            convidado.setAcompanhante(acompanhante);
+            Convidado convidado = new Convidado(nome, phone, sexo, acompanhante, itensSelecionados);
 
             if (MainActivity.posicaoNaLista != -1){
                 convidados.remove(MainActivity.posicaoNaLista);
@@ -200,6 +227,7 @@ public class ListaDeConvidadosActivity extends AppCompatActivity {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){

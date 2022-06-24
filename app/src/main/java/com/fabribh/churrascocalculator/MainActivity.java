@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.ArraySet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,9 +29,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fabribh.churrascocalculator.entities.Convidado;
+import com.fabribh.churrascocalculator.entities.Item;
+import com.fabribh.churrascocalculator.persistencia.ConvidadoDatabase;
+import com.fabribh.churrascocalculator.utils.UtilsGUI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String ITENS = "ITENS";
     public static final String ULTIMOS_ITENS = "ULTIMOS_ITENS";
 
+    public static final int KILO = 1;
+    public static final int LITRO = 2;
+    public static final int LATA = 3;
+    private static final String ID = "ID";
+
     private Spinner spinnerItens;
     private EditText editTextNome, editTextPhone;
     private RadioGroup radioGroup;
@@ -57,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Set<String> ultimosItensSelecionados = new ArraySet<>();
     public static final String ARQUIVO = "com.fabribh.churrascocalculator.ULTIMOS_ITENS_SELECIONADO";
+
+    private Convidado convidado;
 
     public static void novoConvidado(ListaDeConvidadosActivity activity) {
 
@@ -72,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         posicaoNaLista = posicao;
         Intent intent = new Intent(activity, MainActivity.class);
         intent.putExtra(MODO, ALTERAR);
+        intent.putExtra(ID, convidado.getId());
         intent.putExtra(NOME, convidado.getNome());
         intent.putExtra(PHONE, convidado.getPhone());
         intent.putExtra(SEXO, convidado.getSexo());
@@ -112,7 +125,14 @@ public class MainActivity extends AppCompatActivity {
             modo = bundle.getInt(MODO, NOVO);
             if (modo == NOVO) {
                 setTitle(getString(R.string.novo_convidado));
+                convidado = new Convidado();
+                getPreferencia();
             } else {
+                int id = bundle.getInt(ID);
+
+                ConvidadoDatabase database = ConvidadoDatabase.getDatabase(this);
+                convidado = database.convidadoDao().queryForId(id);
+
                 editTextNome.setText(bundle.getString(NOME));
                 editTextPhone.setText(bundle.getString(PHONE));
                 spinnerItens.setSelection(bundle.getString(SEXO) == getString(R.string.masculino) ? 0 : 1);
@@ -120,29 +140,28 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] itensSelecionados = bundle.getString(ITENS).split("[^a-zA-Z\\t\\s]");
                 for (int i = 0; i < itensSelecionados.length; i++){
-                    if (itensSelecionados[i].trim().equals(getString(R.string.suco).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.suco).trim())) {
                         checkBoxSuco.setChecked(true);
                     }
-                    if (itensSelecionados[i].trim().equals(getString(R.string.refrigerante).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.refrigerante).trim())) {
                         checkBoxRefri.setChecked(true);
                     }
-                    if (itensSelecionados[i].trim().equals(getString(R.string.cerveja).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.cerveja).trim())) {
                         checkBoxCerveja.setChecked(true);
                     }
-                    if (itensSelecionados[i].trim().equals(getString(R.string.porco).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.porco).trim())) {
                         checkBoxPorco.setChecked(true);
                     }
-                    if (itensSelecionados[i].trim().equals(getString(R.string.frango).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.frango).trim())) {
                         checkBoxFrango.setChecked(true);
                     }
-                    if (itensSelecionados[i].trim().equals(getString(R.string.boi).trim())) {
+                    if (itensSelecionados[i].trim().contains(getString(R.string.boi).trim())) {
                         checkBoxBoi.setChecked(true);
                     }
                 }
                 setTitle(getString(R.string.alterar_convidado));
             }
         }
-        getPreferencia();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -155,13 +174,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setPreferencia(List<String> itensSelecionados){
+    private void setPreferencia(Set<String> itensSelecionados){
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putStringSet(ULTIMOS_ITENS, itensSelecionados
-                .stream()
-                .collect(Collectors.toSet()));
+        editor.putStringSet(ULTIMOS_ITENS, itensSelecionados);
 
         editor.commit();
     }
@@ -171,22 +188,22 @@ public class MainActivity extends AppCompatActivity {
         if(!ultimosItensSelecionados.isEmpty()){
             ultimosItensSelecionados
                     .forEach(i -> {
-                        if (i.equals(getString(R.string.suco))){
+                        if (i.contains(getString(R.string.suco))){
                           checkBoxSuco.setChecked(true);
                         }
-                        if (i.equals(getString(R.string.refrigerante))){
+                        if (i.contains(getString(R.string.refrigerante))){
                             checkBoxRefri.setChecked(true);
                         }
-                        if (i.equals(getString(R.string.cerveja))){
+                        if (i.contains(getString(R.string.cerveja))){
                             checkBoxCerveja.setChecked(true);
                         }
-                        if (i.equals(getString(R.string.frango))){
+                        if (i.contains(getString(R.string.frango))){
                             checkBoxFrango.setChecked(true);
                         }
-                        if (i.equals(getString(R.string.porco))){
+                        if (i.contains(getString(R.string.porco))){
                             checkBoxPorco.setChecked(true);
                         }
-                        if (i.equals(getString(boi))){
+                        if (i.contains(getString(boi))){
                             checkBoxBoi.setChecked(true);
                         }
                     });
@@ -207,46 +224,33 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void salvar() {
-        String nome = editTextNome.getText().toString();
-        String phone = editTextPhone.getText().toString();
-        String acompanhante;
-        ArrayList<String> itens = new ArrayList<>();
-
-        if (nome == null || nome.trim().isEmpty()) {
-            makeText(this, getString(R.string.erro_nome), Toast.LENGTH_SHORT)
-                    .show();
+        String nome = UtilsGUI.validaCampoTexto(this,
+                                                editTextNome.getText().toString(), // Pode ser null
+                                                R.string.erro_nome);
+        if (nome == null) {
+            editTextNome.setText(null);
             editTextNome.requestFocus();
+            return;
         }
-        if (phone == null || phone.trim().isEmpty()) {
-            makeText(this, getString(R.string.erro_phone), Toast.LENGTH_SHORT)
-                    .show();
+
+        String phone = UtilsGUI.validaCampoTexto(this,
+                                                editTextPhone.getText().toString(), // Pode ser null
+                                                R.string.erro_phone);
+        if (phone == null) {
+            editTextPhone.setText(null);
             editTextPhone.requestFocus();
+            return;
         }
 
-        if (checkBoxBoi.isChecked()) {
-            itens.add(getString(boi));
-        }
-        if (checkBoxFrango.isChecked()) {
-            itens.add(getString(R.string.frango));
-        }
-        if (checkBoxPorco.isChecked()) {
-            itens.add(getString(R.string.porco));
-        }
-        if (checkBoxCerveja.isChecked()) {
-            itens.add(getString(R.string.cerveja));
-        }
-        if (checkBoxSuco.isChecked()) {
-            itens.add(getString(R.string.suco));
-        }
-        if (checkBoxRefri.isChecked()) {
-            itens.add(getString(R.string.refrigerante));
-        }
-
-        String sexo = (String) spinnerItens.getSelectedItem();
+        String sexo = UtilsGUI.validaCampoTexto(this,
+                (String) spinnerItens.getSelectedItem(),
+                R.string.erro_sexo);
         if (sexo == null) {
-            makeText(this, getString(R.string.erro_sexo), Toast.LENGTH_SHORT)
-                    .show();
+            spinnerItens.requestFocus();
+            return;
         }
+
+        String acompanhante;
 
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radioButtonSim:
@@ -256,23 +260,86 @@ public class MainActivity extends AppCompatActivity {
                 acompanhante = getString(R.string.nao);
                 break;
             default:
-                makeText(this, getString(R.string.erro_acompanhante), Toast.LENGTH_SHORT)
-                        .show();
+                UtilsGUI.validaCampoTexto(this,
+                        null,
+                        R.string.erro_acompanhante);
                 radioGroup.requestFocus();
                 return;
         }
+        List<Item> itens = new ArrayList<>();
+
+        if (checkBoxBoi.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, KILO);
+            itens.add(new Item(getString(R.string.boi),s));
+        }
+        if (checkBoxFrango.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, KILO);
+            itens.add(new Item(getString(R.string.frango),s));
+        }
+        if (checkBoxPorco.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, KILO);
+            itens.add(new Item(getString(R.string.porco),s));
+        }
+        if (checkBoxCerveja.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, LATA);
+            itens.add(new Item(getString(R.string.cerveja),s));
+        }
+        if (checkBoxSuco.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, LITRO);
+            itens.add(new Item(getString(R.string.suco),s));
+        }
+        if (checkBoxRefri.isChecked()) {
+            String s = getQuantidadeDoItemSelecionado(acompanhante, LITRO);
+            itens.add(new Item(getString(R.string.refrigerante),s));
+        }
+
+        String itensComoString = itens.stream().map(Objects::toString).collect(Collectors.joining(", "));
 
         Intent intent = new Intent();
         intent.putExtra(NOME, nome);
         intent.putExtra(PHONE, phone);
         intent.putExtra(SEXO, sexo);
         intent.putExtra(ACOMPANHANTE, acompanhante);
-        intent.putExtra(ITENS, itens);
+        intent.putExtra(ITENS, itensComoString);
 
-        setPreferencia(itens);
+        setPreferencia(itens.stream().map(Objects::toString).collect(Collectors.toSet()));
+        ConvidadoDatabase database = ConvidadoDatabase.getDatabase(this);
+        convidado.setNome(nome);
+        convidado.setPhone(phone);
+        convidado.setSexo(sexo);
+        convidado.setAcompanhante(acompanhante);
+        convidado.setItem(itensComoString);
+        if (modo == NOVO) {
+            database.convidadoDao().insert(convidado);
+        } else {
+            database.convidadoDao().update(convidado);
+        }
 
         setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    @NonNull
+    private String getQuantidadeDoItemSelecionado(String acompanhante, int n) {
+        String retorno = null;
+        switch (n){
+            case 1:
+                retorno = acompanhante.equals(getString(R.string.sim)) ?
+                    getString(R.string.kg_08) :
+                    getString(R.string.kg_04);
+                break;
+            case 2:
+                retorno = acompanhante.equals(getString(R.string.sim)) ?
+                    getString(R.string.l_2) :
+                    getString(R.string.l_1);
+                break;
+            case 3:
+                retorno = acompanhante.equals(getString(R.string.sim)) ?
+                        getString(R.string.lt_12) :
+                        getString(R.string.lt_6);
+                break;
+        }
+        return retorno;
     }
 
     @Override

@@ -1,19 +1,43 @@
 package com.fabribh.churrascocalculator.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Convidado {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @NonNull
     private String nome;
+    @NonNull
     private String phone;
     private String sexo;
     private String acompanhante;
-    private List<Item> item;
+    private String item;
 
-    public Convidado(String nome, String phone, List<Item> item) {
+    public Convidado(String nome, String phone, String sexo, String acompanhante, String item) {
         this.nome = nome;
         this.phone = phone;
+        this.sexo = sexo;
+        this.acompanhante = acompanhante;
         this.item = item;
+    }
+
+    public Convidado() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -48,8 +72,12 @@ public class Convidado {
         this.acompanhante = acompanhante;
     }
 
-    public List<Item> getItem() {
+    public String getItem() {
         return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
     }
 
     @Override

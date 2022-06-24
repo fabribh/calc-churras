@@ -5,10 +5,15 @@ import java.util.Objects;
 public class Item {
 
     private String nome;
+
     private String quantidade;
 
-    public Item(String nome) {
+    public Item(String nome, String quantidade) {
         this.nome = nome;
+        this.quantidade = quantidade;
+    }
+
+    public Item() {
     }
 
     public String getNome() {

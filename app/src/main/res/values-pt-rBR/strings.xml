@@ -41,4 +41,14 @@
     <string name="novo_convidado">Novo Convidado</string>
     <string name="sexoExibicao">"Sexo: "</string>
     <string name="acompanhanteExibir">"Acompanhante: "</string>
+    <string name="deseja_realmente_apagar">Do you really want to erase?</string>
+    <string name="aviso">Warning</string>
+    <string name="ok">OK</string>
+    <string name="confirmacao">Confirmation</string>
+    <string name="kg_04">0,4 KG</string>
+    <string name="kg_08">0,8 KG</string>
+    <string name="l_2">2 L</string>
+    <string name="l_1">1 L</string>
+    <string name="lt_12">12 LT</string>
+    <string name="lt_6">6 LT</string>
 </resources>
